@@ -1,7 +1,10 @@
 <html><head><script type="text/javascript">
 var schedule_url = "https://b3ivwb09fg.execute-api.us-east-1.amazonaws.com/Alpha";
 
+<!--*******************************Display Formats ********************************************-->
 <!--*******************************handle input / output********************************************-->
+
+window.onload = setUpCalendar;
 
 function run(){
 	var month = document.getElementById("selectmonth").value;
@@ -9,6 +12,48 @@ function run(){
 		month = "November"
 	}
 	document.getElementById("displaymonth").innerHTML = month;
+	
+}
+
+function setUpCalendar(){
+	generateCalendar();
+	//document.getElementById("calendar").style.visibility="hidden";
+	//document.getElementById("filteroptions").style.visibility="hidden";
+}
+
+function generateCalendar(){
+    var i;
+    for (i = 1; i <= 31; i++){
+        let day = document.createElement("td");
+        day.innerText = i;
+        day.addEventListener('click', selectDate(i));
+
+        if (i == 3 || i == 5) {
+            var free = document.createElement("button");
+            free.innerText = "Free";
+            free.addEventListener('click', handleFreeButton(i));
+            day.appendChild(free);
+        }
+        var week; 
+        /*display days with respect to a week layout*/
+        if(i%7 == 0){
+        	week = Math.floor(i/7)-1;
+        }else week = Math.floor(i/7); 
+        document.getElementById("week"+week).appendChild(day);
+    }
+}
+
+
+function handleFreeButton(day){
+    return function() {
+        alert("free: " + day);
+    }
+}
+
+function selectDate(day){
+    return function() {
+        alert(day);
+    }
 }
 
 
@@ -66,6 +111,21 @@ function handleClick(e) {
 		text-align: center;
 		color: white;
 	}
+	
+	/* Set a style for all buttons */
+	button {
+	    background-color: #1abc9c;
+	    color: white;
+	    padding: 5px 10px;
+	    margin: 8px 0;
+	    border: none;
+	    cursor: pointer;
+	}
+	
+	/* Add a hover effect for buttons */
+	button:hover {
+	    opacity: 0.8;
+	}
 	nav {								
 		padding: 10px;
 		background: #ccc;
@@ -77,14 +137,20 @@ function handleClick(e) {
 		clear: both;
 	}
 	
-	
-	
-	
-	
-	
-	ul {list-style-type: none;
-	    display: inline-block;
-	}
+	ul {list-style-type: none;}
+
+
+
+
+table{
+	width: 100%;
+}
+
+td:hover{
+	background-color: #1abc9c;
+	color: white;	
+}
+
 
 /* Month header */
 .month {
@@ -119,23 +185,48 @@ function handleClick(e) {
     padding-top: 30px;
     padding-left: 100px;
 }
-
-
-/* Days (1-31) */
-.days {
-    padding: 10px 5px;
-    background: #ddd;
-    width: 11.65%;
-    margin: 3;
+/**********************login screen**********************/
+/* Full-width input fields */
+input[type=text], input[type=password] {
+    width: 100%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+}
+.container {
+    padding: 16px;
 }
 
-.days li {
-    text-align: center;
-    font-size:14px;
-    color: #666;
+span.psw {
+    float: right;
+    padding-top: 16px;
 }
 
-		
+/* The Modal (background) */
+.login {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: white; /* Fallback color */
+    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+    padding-top: 60px;
+}
+
+/* login window */
+.login-content {
+    background-color: white;
+    margin: 5% auto 15% auto; /* 5% from the top, 15% from the bottom and centered */
+    border: 1px solid #888;
+    width: 80%; /* Could be more or less, depending on screen size */
+}
+
 		
 		
 		
@@ -144,8 +235,50 @@ function handleClick(e) {
 
 <!--*******************************lay out page********************************************-->
 
-<header><h1>Team Wezen Scheduler</h1></header>
-<section>
+<header>
+	<h1>Team Wezen Scheduler</h1>
+	<button onclick="document.getElementById('orgid01').style.display='block'" style="width:auto;">Login as Organizer</button>
+	<button onclick="document.getElementById('schedid01').style.display='block'" style="width:auto;">Open Schedule</button>
+</header>
+<!--***************************** Login Page************************************************-->
+
+<section id="LoginForm">
+	<div id="orgid01" class="login">
+		<form  class="login-content animate" action="/action_page.php">
+	    <div class="container">
+	      <label for="uname"><b>Username</b></label>
+	      <input type="text" placeholder="Enter Username" name="uname" required>
+	
+	      <label for="psw"><b>Password</b></label>
+	      <input type="password" placeholder="Enter Password" name="psw" required>
+	        
+	      <button type="submit">Login</button>
+	    </div>
+	    <div class="container" style="background-color:#f1f1f1">
+	      <button type="button" onclick="document.getElementById('orgid01').style.display='none'" class="cancelbtn">Cancel</button>
+	    </div>
+	  </form>
+	</div>
+</section>
+
+<section id="OpenScheduleForm">
+	<div id="schedid01" class="login">
+		<form  class="login-content animate" action="/action_page.php">
+	    <div class="container">
+	      <label for="psw"><b>Secret Code</b></label>
+	      <input type="password" placeholder="Enter Secret Code" name="code" required>
+	        
+	      <button type="submit">Submit</button>
+	    </div>
+	    <div class="container" style="background-color:#f1f1f1">
+	      <button type="button" onclick="document.getElementById('schedid01').style.display='none'" class="cancelbtn">Cancel</button>
+	    </div>
+	  </form>
+	</div>
+</section>
+
+
+<section id="filteroptions">
 	<nav><b>Filter By: </b><br>
 		<label for="dayofweek">Day of Week</label>
 		<select id="dayofweek" onchange="run()">
@@ -176,59 +309,87 @@ function handleClick(e) {
 		  <option value="November">November</option>
 		  <option value="December">December</option>
 		</select>
+		
+		<label for="selectdayofmonth">Day of Month</label>
+		<select id="selectdayofmonth" onchange="run()">
+		  <option value="0">--none--</option>
+		  <option value="1">1</option>
+		  <option value="2">2</option>
+		  <option value="3">3</option>
+		  <option value="4">4</option>
+		  <option value="5">5</option>
+		  <option value="6">6</option>
+		  <option value="7">7</option>
+		  <option value="8">8</option>
+		  <option value="9">9</option>
+		  <option value="10">10</option>
+		  <option value="11">11</option>
+		  <option value="12">12</option>
+		  <option value="13">13</option>
+		  <option value="14">14</option>
+		  <option value="15">15</option>
+		  <option value="16">16</option>
+		  <option value="17">17</option>
+		  <option value="18">18</option>
+		  <option value="19">19</option>
+		  <option value="20">20</option>
+		  <option value="21">21</option>
+		  <option value="22">22</option>
+		  <option value="23">23</option>
+		  <option value="24">24</option>
+		  <option value="25">25</option>
+		  <option value="26">26</option>
+		  <option value="27">27</option>
+		  <option value="28">28</option>
+		  <option value="29">29</option>
+		  <option value="30">30</option>
+		  <option value="31">31</option>
+		</select>
+		
+		<label for="selectyear">Year</label>
+		<select id="selectyear" onchange="run()">
+		  <option value="2018">2018</option>
+		  <option value="2019">2019</option>
+		  <option value="2020">2020</option>
+		  <option value="2021">2021</option>
+		  <option value="2022">2022</option>
+		  <option value="2023">2023</option>
+		  <option value="2024">2024</option>
+		  <option value="2025">2025</option>
+		</select>
 	</nav>
 </section>
 
 
-
-
-
-
-
-<section>
+<section id="calendar">
 	<div class="month"> 
-  <ul>
-    <li class="prev">&#10094;</li>
-    <li class="next">&#10095;</li>
-    <li><h2 id="displaymonth">November</h2><br><span style="font-size:18px">2018</span></li>
-    
-  </ul>
-</div>
-	<ul class="days"><li>Monday</li></ul>
-	<ul class="days"><li>Tuesday</li></ul>
-	<ul class="days"><li>Wednesday</li></ul>
-	<ul class="days"><li>Thursday</li></ul>
-	<ul class="days"><li>Friday</li></ul>
-	<ul class="days"><li>Saturday</li></ul>
-	<ul class="days"><li>Sunday</li></ul>
-
-
-</section>
-<section>
-	<nav>
-		<ul class="days"><li>1</li></ul>
-		<ul class="days"><li>2</li></ul>
-		<ul class="days"><li>3</li></ul>
-		<ul class="days"><li>4</li></ul>
-		<ul class="days"><li>5</li></ul>
-		<ul class="days"><li>6</li></ul>
-		<ul class="days"><li>7</li></ul>
-
-	</nav>
+	  <ul>
+	    <li class="prev">&#10094;</li>
+	    <li class="next">&#10095;</li>
+	    <li><h2 id="displaymonth">November</h2><br><span style="font-size:18px">2018</span></li>  
+	  </ul>
+	</div>
+	
+	<table>
+	  <tr>
+	  	<td id="TimeLabel"><b>Times</td>
+	  	<td><b>Sunday</td>
+	  	<td><b>Monday</td>
+	  	<td><b>Tuesday</td>
+	  	<td><b>Wednesday</td>
+	  	<td><b>Thursday</td>
+	  	<td><b>Friday</td>
+	  	<td><b>Saturday</td>
+	  </tr>
+	  <tr id="week0"></tr>
+	  <tr id="week1"></tr>
+	  <tr id="week2"></tr>
+	  <tr id="week3"></tr>
+	  <tr id="week4"></tr>
+	</table>
 </section>
 
 
-
-
-
-
-
-
-
-<form name="addForm" method="post" name="addValues">
-  <input name="arg1" value="" /><input name="arg2" value="" /><input name="result" readonly/>
-  <input type="button" value="Woo"  onClick="JavaScript:handleClick(this)">
-</form>
 
 
 </body>
