@@ -1,6 +1,5 @@
 <html><head><script type="text/javascript">
 var schedule_url = "https://b3ivwb09fg.execute-api.us-east-1.amazonaws.com/Alpha";
-
 <!--*******************************Display Formats ********************************************-->
 <!--*******************************handle input / output********************************************-->
 
@@ -12,18 +11,44 @@ function run(){
 		month = "November"
 	}
 	document.getElementById("displaymonth").innerHTML = month;
-	
 }
 
 function setUpCalendar(){
 	generateCalendar();
-	//document.getElementById("calendar").style.visibility="hidden";
-	//document.getElementById("filteroptions").style.visibility="hidden";
+//	document.getElementById("calendarwindow").style.visibility="hidden";
 }
 
 function generateCalendar(){
-    var i;
-    for (i = 1; i <= 31; i++){
+	document.getElementById("daysview").innerHTML = "";
+	
+	
+    var view = document.getElementById("viewselect").value;
+    if(view == "week"){weekView();}
+    else{monthView();}
+}
+function makeHeader(arr){
+    var header = document.createElement("tr");
+	document.getElementById("daysview").appendChild(header);
+	for(let j=0;j<arr.length;j++){
+		let head = document.createElement("td");
+		html =  "<b>" + arr[j];
+		head.innerHTML = html;
+		header.appendChild(head);
+	}
+}
+
+function weekView(){   
+	var headervals = ["Time","Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"]; 
+	makeHeader(headervals);
+	var currWeek = document.createElement("tr");
+	document.getElementById("daysview").appendChild(currWeek);
+	
+	var emptytime = document.createElement("td");
+	currWeek.appendChild(emptytime);
+	
+	var weekstart = 1;
+	var weekend = weekstart + 7;
+	for (let i = weekstart; i < weekend; i++){
         let day = document.createElement("td");
         day.innerText = i;
         day.addEventListener('click', selectDate(i));
@@ -34,15 +59,38 @@ function generateCalendar(){
             free.addEventListener('click', handleFreeButton(i));
             day.appendChild(free);
         }
-        var week; 
-        /*display days with respect to a week layout*/
-        if(i%7 == 0){
-        	week = Math.floor(i/7)-1;
-        }else week = Math.floor(i/7); 
-        document.getElementById("week"+week).appendChild(day);
+        currWeek.appendChild(day);//only the first row
     }
 }
 
+function monthView(){
+	var monthlength = 31;
+	var daysview = document.getElementById("daysview");
+	
+	var headervals = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"]; 
+	makeHeader(headervals);
+    var currWeek = document.createElement("tr");
+    daysview.appendChild(currWeek);
+
+	for (let i = 1; i <= monthlength; i++){
+        let day = document.createElement("td");
+        day.innerText = i;
+        day.addEventListener('click', selectDate(i));
+
+        if (i == 3 || i == 5) {
+            var free = document.createElement("button");
+            free.innerText = "Free";
+            free.addEventListener('click', handleFreeButton(i));
+            day.appendChild(free);
+        }
+
+        if(i%7 == 0){
+        	currWeek.appendChild(day)
+        	currWeek = document.createElement("tr");
+        	daysview.appendChild(currWeek);
+        } else {currWeek.appendChild(day);}
+    }
+}
 
 function handleFreeButton(day){
     return function() {
@@ -56,6 +104,38 @@ function selectDate(day){
     }
 }
 
+function openOrgTools(){
+	document.getElementById('orgid01').style.display='none';
+	document.getElementById('orgtools').style.display='block';
+}
+function handleLogin(e){
+  var orgid = somethinggoeshere;
+  orgid.style.display='block';
+  var data = {};
+  data["arg1"] = arg1;
+  data["arg2"] = arg2;
+
+  var js = JSON.stringify(data);
+  console.log("JS:" + js);
+  var xhr = new XMLHttpRequest();
+  xhr.open("POST", schedule_url, true);
+
+  // send the collected data as JSON
+  xhr.send(js);
+
+  // This will process results and update HTML as appropriate. 
+  xhr.onloadend = function () {
+    console.log(xhr);
+    console.log(xhr.request);
+    if (xhr.readyState == XMLHttpRequest.DONE) {
+      console.log ("XHR:" + xhr.responseText);
+      processResponse(arg1, arg2, xhr.responseText);
+    } else {
+      processResponse(arg1, arg2, "N/A");
+    }
+  };
+
+}
 
 function processResponse(arg1, arg2, result) {
   // Can grab any DIV or SPAN HTML element and can then manipulate its
@@ -68,6 +148,7 @@ function processResponse(arg1, arg2, result) {
   // Update computation result
   document.addForm.result.value = computation
 }
+
 
 function handleClick(e) {
   var form = document.addForm;
@@ -98,6 +179,13 @@ function handleClick(e) {
     }
   };
 }
+
+
+
+
+
+
+
 </script>
 
 
@@ -116,7 +204,7 @@ function handleClick(e) {
 	button {
 	    background-color: #1abc9c;
 	    color: white;
-	    padding: 5px 10px;
+	    padding: 5px 8px;
 	    margin: 8px 0;
 	    border: none;
 	    cursor: pointer;
@@ -142,13 +230,12 @@ function handleClick(e) {
 
 
 
-table{
-	width: 100%;
-}
+
 
 td:hover{
 	background-color: #1abc9c;
-	color: white;	
+	opacity: 0.6;
+	color: black;	
 }
 
 
@@ -227,8 +314,11 @@ span.psw {
     width: 80%; /* Could be more or less, depending on screen size */
 }
 
-		
-		
+table{
+	width: 100%;
+	text-align: center;
+}
+	
 		
 </style>
 </head><body>
@@ -237,22 +327,19 @@ span.psw {
 
 <header>
 	<h1>Team Wezen Scheduler</h1>
-	<button onclick="document.getElementById('orgid01').style.display='block'" style="width:auto;">Login as Organizer</button>
+	<button onclick="document.getElementById('orgid01').style.display='block'" style="width:auto;">Edit as Organizer</button>
 	<button onclick="document.getElementById('schedid01').style.display='block'" style="width:auto;">Open Schedule</button>
 </header>
 <!--***************************** Login Page************************************************-->
 
-<section id="LoginForm">
+<section id="OrgLoginForm">
 	<div id="orgid01" class="login">
-		<form  class="login-content animate" action="/action_page.php">
+		<form  class="login-content animate"  onsubmit="openOrgTools()">
 	    <div class="container">
-	      <label for="uname"><b>Username</b></label>
-	      <input type="text" placeholder="Enter Username" name="uname" required>
-	
-	      <label for="psw"><b>Password</b></label>
-	      <input type="password" placeholder="Enter Password" name="psw" required>
+	      <label for="psw"><b>Organizer Code</b></label>
+	      <input type="password" placeholder="Enter Code" name="psw" required>
 	        
-	      <button type="submit">Login</button>
+	      <button type="submit" style="width:auto;">Submit</button>
 	    </div>
 	    <div class="container" style="background-color:#f1f1f1">
 	      <button type="button" onclick="document.getElementById('orgid01').style.display='none'" class="cancelbtn">Cancel</button>
@@ -261,12 +348,37 @@ span.psw {
 	</div>
 </section>
 
+<section id="OrganizerTools">
+	<div id="orgtools" class="login">
+		<form  class="login-content animate"  >
+	    <div class="container">
+	      <form>
+	      	<label for="setstartday"><b>Start Date</label>
+	      	<input type="text" id="setstartday" placeholder="MM/DD/YYYY" required>
+	      	<label for="setendday"><b>End Date</label>
+	      	<input type="text" id="setendday" placeholder="MM/DD/YYYY" required>
+	      	<label for="settimeslots"><b>Length of Timeslots</label>
+	      	<input type="text" id="settimeslots" placeholder="time in minutes" required>
+	      	<label for="settimestart"><b>Daily Start Time</label>
+	      	<input type="text" id="settimestart" placeholder="24:00" required>
+	      	<label for="settimeend"><b>Daily End Time</label>
+	      	<input type="text" id="settimeend" placeholder="24:00" required>
+	      </form>
+	      <button type="submit">Submit</button>
+	    </div>
+	    <div class="container" style="background-color:#f1f1f1">
+	      <button type="button" onclick="document.getElementById('orgtools').style.display='none'" class="cancelbtn">Cancel</button>
+	    </div>
+	  </form>
+	</div>
+</section>
+
 <section id="OpenScheduleForm">
 	<div id="schedid01" class="login">
-		<form  class="login-content animate" action="/action_page.php">
+		<form  class="login-content animate">
 	    <div class="container">
 	      <label for="psw"><b>Secret Code</b></label>
-	      <input type="password" placeholder="Enter Secret Code" name="code" required>
+	      <input type="password" id="secretcode" placeholder="Enter Secret Code" name="code" required>
 	        
 	      <button type="submit">Submit</button>
 	    </div>
@@ -277,6 +389,7 @@ span.psw {
 	</div>
 </section>
 
+<section id="calendarwindow">
 
 <section id="filteroptions">
 	<nav><b>Filter By: </b><br>
@@ -360,9 +473,18 @@ span.psw {
 	</nav>
 </section>
 
+<section id="toggleview">
+	<nav>
+		<label for="viewselect">View as</label>
+		<select id="viewselect" onchange="generateCalendar()">
+			<option value="week">Week</option>
+			<option value="month">Month</option>
+		</select>
+	</nav>
+</section>
 
 <section id="calendar">
-	<div class="month"> 
+	<div class="month">  
 	  <ul>
 	    <li class="prev">&#10094;</li>
 	    <li class="next">&#10095;</li>
@@ -370,27 +492,15 @@ span.psw {
 	  </ul>
 	</div>
 	
-	<table>
-	  <tr>
-	  	<td id="TimeLabel"><b>Times</td>
-	  	<td><b>Sunday</td>
-	  	<td><b>Monday</td>
-	  	<td><b>Tuesday</td>
-	  	<td><b>Wednesday</td>
-	  	<td><b>Thursday</td>
-	  	<td><b>Friday</td>
-	  	<td><b>Saturday</td>
-	  </tr>
-	  <tr id="week0"></tr>
-	  <tr id="week1"></tr>
-	  <tr id="week2"></tr>
-	  <tr id="week3"></tr>
-	  <tr id="week4"></tr>
-	</table>
+
+	<table id="daysview"></table>
 </section>
 
+<section>
+	<table id="timeslot"></table>
+</section>
 
-
+</seciton>
 
 </body>
 </html>
