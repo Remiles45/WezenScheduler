@@ -8,6 +8,7 @@ public class OrgLoginRequest {
 		this.user = a1;
 		this.pass = a2;
 	}
+	
 	public String toString() {
 		return "Org(" + user + "," + pass + ")";
 	}
