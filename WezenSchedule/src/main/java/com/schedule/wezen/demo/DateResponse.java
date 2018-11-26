@@ -5,7 +5,7 @@ public class DateResponse {
 	int httpCode;
 	
 	public DateResponse (String n, int code) {
-		this.name = n;
+		this.name = n; // May change as implementation does
 		this.httpCode = code;
 	}
 	
