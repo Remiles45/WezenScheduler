@@ -4,7 +4,8 @@ public class DateRequest {
 	String name;
 	
 	public DateRequest (String n) {
-		this.name = n;
+		this.name = "Wezen";
+		//this.name = n;
 	}
 	
 	public String toString() {

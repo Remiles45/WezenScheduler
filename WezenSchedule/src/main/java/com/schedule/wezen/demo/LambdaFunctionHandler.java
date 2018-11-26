@@ -67,8 +67,7 @@ public class LambdaFunctionHandler implements RequestStreamHandler {
 			// if the input couldn't be processed
 		} catch (ParseException pe) {
 			logger.log(pe.toString());
-			
-			// NOTE: This sets day variable in DateResponse to 0
+		
 			dateResponse = new DateResponse("", 422);  // Send a 422 code (unable to process input)
 	        dateResponseJson.put("body", new Gson().toJson(dateResponse));
 	        processed = true;
@@ -83,11 +82,9 @@ public class LambdaFunctionHandler implements RequestStreamHandler {
 			// This is where stuff starts happening
 
 			// compute proper response
-			
 			String meetName = "";
 			meetName = req.name;
-			// NOTE: Sets day to 0
-			DateResponse resp = new DateResponse(meetName, 200); // Add the two values, store them in a new add response with a 200 code
+			DateResponse resp = new DateResponse(meetName, 200); // Take name, store it in a new add response with a 200 code
 	        dateResponseJson.put("body", new Gson().toJson(resp)); // put it in responseJson 
 		}
 		

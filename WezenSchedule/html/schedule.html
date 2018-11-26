@@ -92,7 +92,7 @@ function monthView(){
     }
 }
 
-function processDateResponse(name, result) {
+function processDateResponse(name, day, result) {
 	// Can grab any DIV or SPAN HTML element and can then manipulate its
 	// contents dynamically via javascript
 	console.log("result:" + result);
@@ -101,19 +101,22 @@ function processDateResponse(name, result) {
 	var response = js["name"];
 	
 	// Update response
-	alert("free: " + response);
+	alert("free: Date: " + day + ": " + response);
 }
 
-function handleFreeButton(e){
-	var name = form.name.value;
+function handleFreeButton(day){
+	//var name;
+	
+	//var data = {};
+	//data["name"] = name;
 	
 	var data = {};
-	data["name"] = name;
+	data["date"] = day;
 
 	var js = JSON.stringify(data);
 	console.log("JS:" + js);
 	var xhr = new XMLHttpRequest();
-	xhr.open("POST", create_url, true);
+	xhr.open("POST", schedule_url, true);
 	
 	// send the collected date as JSON
 	xhr.send(js);
@@ -124,11 +127,10 @@ function handleFreeButton(e){
 		console.log(xhr.request);
 		if(xhr.readyState == XMLHttpRequest.DONE) {
 			console.log ("XHR:" + xhr.responseText);
-			processDateResponse(name, xhr.responseText);
+			processDateResponse(name, day, xhr.responseText);
 		} else {
-			processDateResponse(name, "N/A");
+			processDateResponse(name, day, "N/A");
 		}
-        //alert("free: " + day);
     }
 }
 
@@ -534,12 +536,7 @@ table{
 	<table id="timeslot"></table>
 </section>
 
-<h2>Constants</h2>
-
-<form name="createForm" method="post" name="createConstant">
-  <input name="name" value="" /><input name="value" value="" /><input name="result" readonly/>
-  <input type="button" value="Submit"  onClick="JavaScript:handleCreateClick(this)">
-</form>
+</seciton>
 
 </body>
 </html>
