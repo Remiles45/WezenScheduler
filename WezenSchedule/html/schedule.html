@@ -1,0 +1,542 @@
+<html><head><script type="text/javascript">
+var schedule_url = "https://b3ivwb09fg.execute-api.us-east-1.amazonaws.com/Alpha";
+<!--*******************************Display Formats ********************************************-->
+<!--*******************************handle input / output********************************************-->
+
+window.onload = setUpCalendar;
+
+function run(){
+	var month = document.getElementById("selectmonth").value;
+	if (month == "nomonth"){
+		month = "November"
+	}
+	document.getElementById("displaymonth").innerHTML = month;
+}
+
+function setUpCalendar(){
+	generateCalendar();
+//	document.getElementById("calendarwindow").style.visibility="hidden";
+}
+
+function generateCalendar(){
+	document.getElementById("daysview").innerHTML = "";
+	
+	
+    var view = document.getElementById("viewselect").value;
+    if(view == "week"){weekView();}
+    else{monthView();}
+}
+function makeHeader(arr){
+    var header = document.createElement("tr");
+	document.getElementById("daysview").appendChild(header);
+	for(let j=0;j<arr.length;j++){
+		let head = document.createElement("td");
+		html =  "<b>" + arr[j];
+		head.innerHTML = html;
+		header.appendChild(head);
+	}
+}
+
+function weekView(){   
+	var headervals = ["Time","Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"]; 
+	makeHeader(headervals);
+	var currWeek = document.createElement("tr");
+	document.getElementById("daysview").appendChild(currWeek);
+	
+	var emptytime = document.createElement("td");
+	currWeek.appendChild(emptytime);
+	
+	var weekstart = 1;
+	var weekend = weekstart + 7;
+	for (let i = weekstart; i < weekend; i++){
+        let day = document.createElement("td");
+        day.innerText = i;
+        day.addEventListener('click', selectDate(i));
+
+        if (i == 3 || i == 5) {
+            var free = document.createElement("button");
+            free.innerText = "Free";
+            free.addEventListener('click', handleFreeButton(i));
+            day.appendChild(free);
+        }
+        currWeek.appendChild(day);//only the first row
+    }
+}
+
+function monthView(){
+	var monthlength = 31;
+	var daysview = document.getElementById("daysview");
+	
+	var headervals = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"]; 
+	makeHeader(headervals);
+    var currWeek = document.createElement("tr");
+    daysview.appendChild(currWeek);
+
+	for (let i = 1; i <= monthlength; i++){
+        let day = document.createElement("td");
+        day.innerText = i;
+        day.addEventListener('click', selectDate(i));
+
+        if (i == 3 || i == 5) {
+            var free = document.createElement("button");
+            free.innerText = "Free";
+            free.addEventListener('click', handleFreeButton(i));
+            day.appendChild(free);
+        }
+
+        if(i%7 == 0){
+        	currWeek.appendChild(day)
+        	currWeek = document.createElement("tr");
+        	daysview.appendChild(currWeek);
+        } else {currWeek.appendChild(day);}
+    }
+}
+
+function processDateResponse(name, day, result) {
+	// Can grab any DIV or SPAN HTML element and can then manipulate its
+	// contents dynamically via javascript
+	console.log("result:" + result);
+	var js = JSON.parse(result);
+	
+	var response = js["name"];
+	
+	// Update response
+	alert("free: Date: " + day + ": " + response);
+}
+
+function handleFreeButton(day){
+	//var name;
+	
+	//var data = {};
+	//data["name"] = name;
+	
+	var data = {};
+	data["date"] = day;
+
+	var js = JSON.stringify(data);
+	console.log("JS:" + js);
+	var xhr = new XMLHttpRequest();
+	xhr.open("POST", schedule_url, true);
+	
+	// send the collected date as JSON
+	xhr.send(js);
+	
+	// This will process results and update HTML as appropriate
+	xhr.onloadend = function() {
+		console.log(xhr);
+		console.log(xhr.request);
+		if(xhr.readyState == XMLHttpRequest.DONE) {
+			console.log ("XHR:" + xhr.responseText);
+			processDateResponse(name, day, xhr.responseText);
+		} else {
+			processDateResponse(name, day, "N/A");
+		}
+    }
+}
+
+function selectDate(day){
+    return function() {
+        alert(day);
+    }
+}
+
+function openOrgTools(){
+	document.getElementById('orgid01').style.display='none';
+	document.getElementById('orgtools').style.display='block';
+}
+function handleLogin(e){
+  var orgid = somethinggoeshere;
+  orgid.style.display='block';
+  var data = {};
+  data["arg1"] = arg1;
+  data["arg2"] = arg2;
+
+  var js = JSON.stringify(data);
+  console.log("JS:" + js);
+  var xhr = new XMLHttpRequest();
+  xhr.open("POST", schedule_url, true);
+
+  // send the collected data as JSON
+  xhr.send(js);
+
+  // This will process results and update HTML as appropriate. 
+  xhr.onloadend = function () {
+    console.log(xhr);
+    console.log(xhr.request);
+    if (xhr.readyState == XMLHttpRequest.DONE) {
+      console.log ("XHR:" + xhr.responseText);
+      processResponse(arg1, arg2, xhr.responseText);
+    } else {
+      processResponse(arg1, arg2, "N/A");
+    }
+  };
+
+}
+
+function processResponse(arg1, arg2, result) {
+  // Can grab any DIV or SPAN HTML element and can then manipulate its
+  // contents dynamically via javascript
+  console.log("result:" + result);
+  var js = JSON.parse(result);
+
+  var computation = js["value"];
+
+  // Update computation result
+  document.addForm.result.value = computation
+}
+
+
+function handleClick(e) {
+  var form = document.addForm;
+  var arg1 = form.arg1.value;
+  var arg2 = form.arg2.value;
+
+  var data = {};
+  data["arg1"] = arg1;
+  data["arg2"] = arg2;
+
+  var js = JSON.stringify(data);
+  console.log("JS:" + js);
+  var xhr = new XMLHttpRequest();
+  xhr.open("POST", schedule_url, true);
+
+  // send the collected data as JSON
+  xhr.send(js);
+
+  // This will process results and update HTML as appropriate. 
+  xhr.onloadend = function () {
+    console.log(xhr);
+    console.log(xhr.request);
+    if (xhr.readyState == XMLHttpRequest.DONE) {
+      console.log ("XHR:" + xhr.responseText);
+      processResponse(arg1, arg2, xhr.responseText);
+    } else {
+      processResponse(arg1, arg2, "N/A");
+    }
+  };
+}
+
+
+
+
+
+
+
+</script>
+
+
+<!--*******************************Design Page Elements********************************************-->
+<title> Team Wezen Scheduler</title> 	<!--tab text-->
+<style>
+	body{background-color: honeydew;} 	
+	header{
+		background-color: darkgrey;
+		padding: 10px;
+		text-align: center;
+		color: white;
+	}
+	
+	/* Set a style for all buttons */
+	button {
+	    background-color: #1abc9c;
+	    color: white;
+	    padding: 5px 8px;
+	    margin: 8px 0;
+	    border: none;
+	    cursor: pointer;
+	}
+	
+	/* Add a hover effect for buttons */
+	button:hover {
+	    opacity: 0.8;
+	}
+	nav {								
+		padding: 10px;
+		background: #ccc;
+	}
+	
+	section:after{
+		content: "";
+		display: table;
+		clear: both;
+	}
+	
+	ul {list-style-type: none;}
+
+
+
+
+
+
+td:hover{
+	background-color: #1abc9c;
+	opacity: 0.6;
+	color: black;	
+}
+
+
+/* Month header */
+.month {
+    padding: 20px 25px;
+    background: #1abc9c;
+    text-align: center;
+}
+
+/* Month list */
+.month ul {
+    margin: 0;
+    padding: 0;
+}
+
+.month ul li {
+    color: white;
+    font-size: 20px;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+}
+
+/* Previous button inside month header */
+.month .prev {
+    float: left;
+    padding-top: 30px;
+    padding-right: 100px;
+}
+
+/* Next button */
+.month .next {
+    float: right;
+    padding-top: 30px;
+    padding-left: 100px;
+}
+/**********************login screen**********************/
+/* Full-width input fields */
+input[type=text], input[type=password] {
+    width: 100%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+}
+.container {
+    padding: 16px;
+}
+
+span.psw {
+    float: right;
+    padding-top: 16px;
+}
+
+/* The Modal (background) */
+.login {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: white; /* Fallback color */
+    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+    padding-top: 60px;
+}
+
+/* login window */
+.login-content {
+    background-color: white;
+    margin: 5% auto 15% auto; /* 5% from the top, 15% from the bottom and centered */
+    border: 1px solid #888;
+    width: 80%; /* Could be more or less, depending on screen size */
+}
+
+table{
+	width: 100%;
+	text-align: center;
+}
+	
+		
+</style>
+</head><body>
+
+<!--*******************************lay out page********************************************-->
+
+<header>
+	<h1>Team Wezen Scheduler</h1>
+	<button onclick="document.getElementById('orgid01').style.display='block'" style="width:auto;">Edit as Organizer</button>
+	<button onclick="document.getElementById('schedid01').style.display='block'" style="width:auto;">Open Schedule</button>
+</header>
+<!--***************************** Login Page************************************************-->
+
+<section id="OrgLoginForm">
+	<div id="orgid01" class="login">
+		<form  class="login-content animate"  onsubmit="openOrgTools()">
+	    <div class="container">
+	      <label for="psw"><b>Organizer Code</b></label>
+	      <input type="password" placeholder="Enter Code" name="psw" required>
+	        
+	      <button type="submit" style="width:auto;">Submit</button>
+	    </div>
+	    <div class="container" style="background-color:#f1f1f1">
+	      <button type="button" onclick="document.getElementById('orgid01').style.display='none'" class="cancelbtn">Cancel</button>
+	    </div>
+	  </form>
+	</div>
+</section>
+
+<section id="OrganizerTools">
+	<div id="orgtools" class="login">
+		<form  class="login-content animate"  >
+	    <div class="container">
+	      <form>
+	      	<label for="setstartday"><b>Start Date</label>
+	      	<input type="text" id="setstartday" placeholder="MM/DD/YYYY" required>
+	      	<label for="setendday"><b>End Date</label>
+	      	<input type="text" id="setendday" placeholder="MM/DD/YYYY" required>
+	      	<label for="settimeslots"><b>Length of Timeslots</label>
+	      	<input type="text" id="settimeslots" placeholder="time in minutes" required>
+	      	<label for="settimestart"><b>Daily Start Time</label>
+	      	<input type="text" id="settimestart" placeholder="24:00" required>
+	      	<label for="settimeend"><b>Daily End Time</label>
+	      	<input type="text" id="settimeend" placeholder="24:00" required>
+	      </form>
+	      <button type="submit">Submit</button>
+	    </div>
+	    <div class="container" style="background-color:#f1f1f1">
+	      <button type="button" onclick="document.getElementById('orgtools').style.display='none'" class="cancelbtn">Cancel</button>
+	    </div>
+	  </form>
+	</div>
+</section>
+
+<section id="OpenScheduleForm">
+	<div id="schedid01" class="login">
+		<form  class="login-content animate">
+	    <div class="container">
+	      <label for="psw"><b>Secret Code</b></label>
+	      <input type="password" id="secretcode" placeholder="Enter Secret Code" name="code" required>
+	        
+	      <button type="submit">Submit</button>
+	    </div>
+	    <div class="container" style="background-color:#f1f1f1">
+	      <button type="button" onclick="document.getElementById('schedid01').style.display='none'" class="cancelbtn">Cancel</button>
+	    </div>
+	  </form>
+	</div>
+</section>
+
+<section id="calendarwindow">
+
+<section id="filteroptions">
+	<nav><b>Filter By: </b><br>
+		<label for="dayofweek">Day of Week</label>
+		<select id="dayofweek" onchange="run()">
+		  <option value="0">--none--</option>
+		  <option value="1">Monday</option>
+		  <option value="2">Tuesday</option>
+		  <option value="3">Wednesday</option>
+		  <option value="4">Thursday</option>
+		  <option value="5">Friday</option>
+		  <option value="6">Saturday</option>
+		  <option value="7">Sunday</option>
+		</select>
+		
+
+		<label for="selectmonth">Month</label>
+		<select id="selectmonth" onchange="run()">
+		  <option value="nomonth">--none--</option>
+		  <option value="January">January</option>
+		  <option value="February">February</option>
+		  <option value="March">March</option>
+		  <option value="April">April</option>
+		  <option value="May">May</option>
+		  <option value="June">June</option>
+		  <option value="July">July</option>
+		  <option value="August">August</option>
+		  <option value="September">September</option>
+		  <option value="October">October</option>
+		  <option value="November">November</option>
+		  <option value="December">December</option>
+		</select>
+		
+		<label for="selectdayofmonth">Day of Month</label>
+		<select id="selectdayofmonth" onchange="run()">
+		  <option value="0">--none--</option>
+		  <option value="1">1</option>
+		  <option value="2">2</option>
+		  <option value="3">3</option>
+		  <option value="4">4</option>
+		  <option value="5">5</option>
+		  <option value="6">6</option>
+		  <option value="7">7</option>
+		  <option value="8">8</option>
+		  <option value="9">9</option>
+		  <option value="10">10</option>
+		  <option value="11">11</option>
+		  <option value="12">12</option>
+		  <option value="13">13</option>
+		  <option value="14">14</option>
+		  <option value="15">15</option>
+		  <option value="16">16</option>
+		  <option value="17">17</option>
+		  <option value="18">18</option>
+		  <option value="19">19</option>
+		  <option value="20">20</option>
+		  <option value="21">21</option>
+		  <option value="22">22</option>
+		  <option value="23">23</option>
+		  <option value="24">24</option>
+		  <option value="25">25</option>
+		  <option value="26">26</option>
+		  <option value="27">27</option>
+		  <option value="28">28</option>
+		  <option value="29">29</option>
+		  <option value="30">30</option>
+		  <option value="31">31</option>
+		</select>
+		
+		<label for="selectyear">Year</label>
+		<select id="selectyear" onchange="run()">
+		  <option value="2018">2018</option>
+		  <option value="2019">2019</option>
+		  <option value="2020">2020</option>
+		  <option value="2021">2021</option>
+		  <option value="2022">2022</option>
+		  <option value="2023">2023</option>
+		  <option value="2024">2024</option>
+		  <option value="2025">2025</option>
+		</select>
+	</nav>
+</section>
+
+<section id="toggleview">
+	<nav>
+		<label for="viewselect">View as</label>
+		<select id="viewselect" onchange="generateCalendar()">
+			<option value="week">Week</option>
+			<option value="month">Month</option>
+		</select>
+	</nav>
+</section>
+
+<section id="calendar">
+	<div class="month">  
+	  <ul>
+	    <li class="prev">&#10094;</li>
+	    <li class="next">&#10095;</li>
+	    <li><h2 id="displaymonth">November</h2><br><span style="font-size:18px">2018</span></li>  
+	  </ul>
+	</div>
+	
+
+	<table id="daysview"></table>
+</section>
+
+<section>
+	<table id="timeslot"></table>
+</section>
+
+</seciton>
+
+</body>
+</html>
