@@ -1,0 +1,85 @@
+body{
+  background-color: honeydew;
+}
+
+header{
+  background-color: darkgrey;
+  padding: 10px;
+  text-align: center;
+  color: white;
+}
+
+/* Set a style for all buttons */
+button {
+    background-color: #1abc9c;
+    color: white;
+    padding: 5px 8px;
+    margin: 8px 0;
+    border: none;
+    cursor: pointer;
+}
+
+
+
+nav {
+  padding: 10px;
+  background: #ccc;
+}
+
+section:after{
+	content: "";
+	display: table;
+	clear: both;
+}
+
+ul {
+  list-style-type: none;
+}
+
+table{
+	width: 100%;
+	text-align: center;
+}
+.day {
+  padding-bottom: 30px;
+
+}
+
+button:hover{
+	opacity: 0.6;
+	color: black;
+}
+
+/* Month header */
+.month {
+    padding: 20px 25px;
+    background: #1abc9c;
+    text-align: center;
+}
+
+/* Month list */
+.month ul {
+    margin: 0;
+    padding: 0;
+}
+
+.month ul li {
+    color: white;
+    font-size: 20px;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+}
+
+/* Previous button inside month header */
+.month .prev {
+    float: left;
+    padding-top: 30px;
+    padding-right: 100px;
+}
+
+/* Next button */
+.month .next {
+    float: right;
+    padding-top: 30px;
+    padding-left: 100px;
+}

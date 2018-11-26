@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link rel="stylesheet" type="text/css" href="basestyle.css">
+  </head>
+  <body>
+    <script src="calendarscript.js"></script>
+    <title> Participant Scheduler</title>
+    <header>
+    	<h1>Team Wezen Scheduler</h1>
+    </header>
+
+
+    <section id="calendarwindow">
+
+    <section id="filteroptions">
+    	<nav><b>Filter By: </b><br>
+    		<label for="dayofweek">Day of Week</label>
+    		<select id="dayofweek" onchange="run()">
+    		  <option value="0">--none--</option>
+    		  <option value="1">Monday</option>
+    		  <option value="2">Tuesday</option>
+    		  <option value="3">Wednesday</option>
+    		  <option value="4">Thursday</option>
+    		  <option value="5">Friday</option>
+    		  <option value="6">Saturday</option>
+    		  <option value="7">Sunday</option>
+    		</select>
+
+
+    		<label for="selectmonth">Month</label>
+    		<select id="selectmonth" onchange="run()">
+    		  <option value="nomonth">--none--</option>
+    		  <option value="January">January</option>
+    		  <option value="February">February</option>
+    		  <option value="March">March</option>
+    		  <option value="April">April</option>
+    		  <option value="May">May</option>
+    		  <option value="June">June</option>
+    		  <option value="July">July</option>
+    		  <option value="August">August</option>
+    		  <option value="September">September</option>
+    		  <option value="October">October</option>
+    		  <option value="November">November</option>
+    		  <option value="December">December</option>
+    		</select>
+
+    		<label for="selectdayofmonth">Day of Month</label>
+    		<select id="selectdayofmonth" onchange="run()">
+    		  <option value="0">--none--</option>
+    		  <option value="1">1</option>
+    		  <option value="2">2</option>
+    		  <option value="3">3</option>
+    		  <option value="4">4</option>
+    		  <option value="5">5</option>
+    		  <option value="6">6</option>
+    		  <option value="7">7</option>
+    		  <option value="8">8</option>
+    		  <option value="9">9</option>
+    		  <option value="10">10</option>
+    		  <option value="11">11</option>
+    		  <option value="12">12</option>
+    		  <option value="13">13</option>
+    		  <option value="14">14</option>
+    		  <option value="15">15</option>
+    		  <option value="16">16</option>
+    		  <option value="17">17</option>
+    		  <option value="18">18</option>
+    		  <option value="19">19</option>
+    		  <option value="20">20</option>
+    		  <option value="21">21</option>
+    		  <option value="22">22</option>
+    		  <option value="23">23</option>
+    		  <option value="24">24</option>
+    		  <option value="25">25</option>
+    		  <option value="26">26</option>
+    		  <option value="27">27</option>
+    		  <option value="28">28</option>
+    		  <option value="29">29</option>
+    		  <option value="30">30</option>
+    		  <option value="31">31</option>
+    		</select>
+
+    		<label for="selectyear">Year</label>
+    		<select id="selectyear" onchange="run()">
+    		  <option value="2018">2018</option>
+    		  <option value="2019">2019</option>
+    		  <option value="2020">2020</option>
+    		  <option value="2021">2021</option>
+    		  <option value="2022">2022</option>
+    		  <option value="2023">2023</option>
+    		  <option value="2024">2024</option>
+    		  <option value="2025">2025</option>
+    		</select>
+    	</nav>
+    </section>
+
+    <section id="toggleview">
+    	<nav>
+    		<label for="viewselect">View as</label>
+    		<select id="viewselect" onchange="generateCalendar()">
+    			<option value="week">Week</option>
+    			<option value="month">Month</option>
+    		</select>
+    	</nav>
+    </section>
+
+    <section id="calendar">
+    	<div class="month">
+    	  <ul>
+    	    <li class="prev">&#10094;</li>
+    	    <li class="next">&#10095;</li>
+    	    <li><h2 id="displaymonth">November</h2><br><span style="font-size:18px">2018</span></li>
+    	  </ul>
+    	</div>
+
+
+    	<table id="daysview"></table>
+    </section>
+
+    <section>
+    	<table id="timeslot"></table>
+    </section>
+
+    </section>
+
+  </body>
+</html>
