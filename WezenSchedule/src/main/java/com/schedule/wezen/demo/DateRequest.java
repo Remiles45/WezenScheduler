@@ -1,13 +1,13 @@
 package com.schedule.wezen.demo;
 
 public class DateRequest {
-	int day;
+	String name;
 	
-	public DateRequest (int d) {
-		this.day = d;
+	public DateRequest (String n) {
+		this.name = n;
 	}
 	
 	public String toString() {
-		return "Date(" + day + ")";
+		return "Date(" + name + ")";
 	}
 }

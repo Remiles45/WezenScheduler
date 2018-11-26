@@ -51,8 +51,8 @@ public class LambdaFunctionHandler implements RequestStreamHandler {
 			if (method != null && method.equalsIgnoreCase("OPTIONS")) { // if the method is OPTIONS...
 				logger.log("Options request"); // log it as an OPTIONS request
 				
-				// NOTE: This also sets day variable to 0 in DateResponse
-				dateResponse = new DateResponse(0, 200);  // OPTIONS needs a 200 response
+				
+				dateResponse = new DateResponse("", 200);  // OPTIONS needs a 200 response
 				
 				// dateResponseJson is the object created earlier to hold the JSON response
 		        dateResponseJson.put("body", new Gson().toJson(dateResponse)); // puts the 200 response into the JSON body
@@ -69,7 +69,7 @@ public class LambdaFunctionHandler implements RequestStreamHandler {
 			logger.log(pe.toString());
 			
 			// NOTE: This sets day variable in DateResponse to 0
-			dateResponse = new DateResponse(0, 422);  // Send a 422 code (unable to process input)
+			dateResponse = new DateResponse("", 422);  // Send a 422 code (unable to process input)
 	        dateResponseJson.put("body", new Gson().toJson(dateResponse));
 	        processed = true;
 	        body = null;
@@ -83,8 +83,11 @@ public class LambdaFunctionHandler implements RequestStreamHandler {
 			// This is where stuff starts happening
 
 			// compute proper response
+			
+			String meetName = "";
+			meetName = req.name;
 			// NOTE: Sets day to 0
-			DateResponse resp = new DateResponse(0, 200); // Add the two values, store them in a new add response with a 200 code
+			DateResponse resp = new DateResponse(meetName, 200); // Add the two values, store them in a new add response with a 200 code
 	        dateResponseJson.put("body", new Gson().toJson(resp)); // put it in responseJson 
 		}
 		
