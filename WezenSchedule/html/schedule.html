@@ -92,9 +92,45 @@ function monthView(){
     }
 }
 
+function processDateResponse(name, day, result) {
+	// Can grab any DIV or SPAN HTML element and can then manipulate its
+	// contents dynamically via javascript
+	console.log("result:" + result);
+	var js = JSON.parse(result);
+	
+	var response = js["name"];
+	
+	// Update response
+	alert("free: Date: " + day + ": " + response);
+}
+
 function handleFreeButton(day){
-    return function() {
-        alert("free: " + day);
+	//var name;
+	
+	//var data = {};
+	//data["name"] = name;
+	
+	var data = {};
+	data["date"] = day;
+
+	var js = JSON.stringify(data);
+	console.log("JS:" + js);
+	var xhr = new XMLHttpRequest();
+	xhr.open("POST", schedule_url, true);
+	
+	// send the collected date as JSON
+	xhr.send(js);
+	
+	// This will process results and update HTML as appropriate
+	xhr.onloadend = function() {
+		console.log(xhr);
+		console.log(xhr.request);
+		if(xhr.readyState == XMLHttpRequest.DONE) {
+			console.log ("XHR:" + xhr.responseText);
+			processDateResponse(name, day, xhr.responseText);
+		} else {
+			processDateResponse(name, day, "N/A");
+		}
     }
 }
 
