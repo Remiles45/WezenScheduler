@@ -1,4 +1,6 @@
-  window.onload = setUpCalendar;
+var schedule_url = "https://b3ivwb09fg.execute-api.us-east-1.amazonaws.com/Alpha";
+
+window.onload = setUpCalendar;
 
   function run(){
     var month = document.getElementById("selectmonth").value;
@@ -14,8 +16,6 @@
 
   function generateCalendar(){
     document.getElementById("daysview").innerHTML = "";
-
-
       var view = document.getElementById("viewselect").value;
       if(view == "week"){weekView();}
       else{monthView();}
@@ -46,13 +46,16 @@
           let day = document.createElement("td");
           day.className = "day";
           day.innerHTML = i + "<br>";
-          day.addEventListener('click', selectDate(i));
+
 
           if (i == 3 || i == 5) {
-              var free = document.createElement("button");
-              free.innerText = "Free";
-              free.addEventListener('click', handleFreeButton(i));
-              day.appendChild(free);
+            let free = document.createElement("button");
+            free.innerText = "Free";
+            free.value = i;
+
+            free.addEventListener('click', function(){handleFreeButton(free)});
+
+            day.appendChild(free);
           }
           currWeek.appendChild(day);//only the first row
       }
@@ -76,7 +79,9 @@
           if (i == 3 || i == 5) {
               var free = document.createElement("button");
               free.innerText = "Free";
-              free.addEventListener('click', handleFreeButton(i));
+              free.value = i;
+              free.addEventListener('click', function(){handleFreeButton(free)});
+
               day.appendChild(free);
           }
 
@@ -92,23 +97,23 @@
     // Can grab any DIV or SPAN HTML element and can then manipulate its
     // contents dynamically via javascript
     console.log("result:" + result);
-    var js = JSON.parse(result);
+    let js = JSON.parse(result);
 
-    var response = js["name"];
+    let response = js["name"];
 
     // Update response
     alert("free: Date: " + day + ": " + response);
 }
 
-function handleFreeButton(day){
-    var data = {};
+function handleFreeButton(obj){
+    let day = obj.value;
+    let data = {};
     data["date"] = day;
-
-    var js = JSON.stringify(data);
+    let js = JSON.stringify(data);
     console.log("JS:" + js);
-    var xhr = new XMLHttpRequest();
-    xhr.open("POST", schedule_url, true);
+    let xhr = new XMLHttpRequest();
 
+    xhr.open("POST", schedule_url, true);
     // send the collected date as JSON
     xhr.send(js);
 
