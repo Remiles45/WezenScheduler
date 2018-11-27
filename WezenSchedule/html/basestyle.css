@@ -4,7 +4,7 @@ body{
 
 header{
   background-color: darkgrey;
-  padding: 10px;
+  padding: 5px;
   text-align: center;
   color: white;
 }
@@ -82,4 +82,12 @@ button:hover{
     float: right;
     padding-top: 30px;
     padding-left: 100px;
+}
+
+form{
+  float: right;
+}
+
+form.adminform{
+  visibility: hidden;
 }

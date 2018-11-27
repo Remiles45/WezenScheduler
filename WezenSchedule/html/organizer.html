@@ -1,13 +1,81 @@
+<!DOCTYPE html>
 <html>
   <head>
-    <script type="text/javascript">
-      var schedule_url = "https://b3ivwb09fg.execute-api.us-east-1.amazonaws.com/Alpha";
-    </script>
-
-
+    <link rel="stylesheet" type="text/css" href="basestyle.css">
   </head>
   <body>
-  <title> Organizer Scheduler</title>
+    <script src="calendarscript.js"></script>
+    <title> Organizer Scheduler</title>
+    <header>
+    	<h1>Team Wezen Scheduler</h1>
+      <h2>Organizer Portal</h2>
+    </header>
+
+
+    <section id="calendarwindow">
+
+    <section id="filteroptions">
+    	<nav><b>Show : </b><br>
+    		<label for="selectmonth">Month</label>
+    		<select id="selectmonth" onchange="run()">
+    		  <option value="nomonth">--none--</option>
+    		  <option value="January">January</option>
+    		  <option value="February">February</option>
+    		  <option value="March">March</option>
+    		  <option value="April">April</option>
+    		  <option value="May">May</option>
+    		  <option value="June">June</option>
+    		  <option value="July">July</option>
+    		  <option value="August">August</option>
+    		  <option value="September">September</option>
+    		  <option value="October">October</option>
+    		  <option value="November">November</option>
+    		  <option value="December">December</option>
+    		</select>
+
+
+    		<label for="selectyear">Year</label>
+    		<select id="selectyear" onchange="run()">
+    		  <option value="2018">2018</option>
+    		  <option value="2019">2019</option>
+    		  <option value="2020">2020</option>
+    		  <option value="2021">2021</option>
+    		  <option value="2022">2022</option>
+    		  <option value="2023">2023</option>
+    		  <option value="2024">2024</option>
+    		  <option value="2025">2025</option>
+    		</select>
+    	</nav>
+    </section>
+
+    <section id="toggleview">
+    	<nav>
+    		<label for="viewselect">View as</label>
+    		<select id="viewselect" onchange="generateCalendar()">
+    			<option value="week">Week</option>
+    			<option value="month">Month</option>
+    		</select>
+    	</nav>
+    </section>
+
+    <section id="calendar">
+    	<div class="month">
+    	  <ul>
+    	    <li class="prev">&#10094;</li>
+    	    <li class="next">&#10095;</li>
+    	    <li><h2 id="displaymonth">November</h2><br><span style="font-size:18px">2018</span></li>
+    	  </ul>
+    	</div>
+
+
+    	<table id="daysview"></table>
+    </section>
+
+    <section>
+    	<table id="timeslot"></table>
+    </section>
+
+    </section>
 
   </body>
 </html>

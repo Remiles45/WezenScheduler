@@ -1,13 +1,32 @@
 <html>
   <head>
-    <script type="text/javascript">
-      var schedule_url = "https://b3ivwb09fg.execute-api.us-east-1.amazonaws.com/Alpha";
-    </script>
-
-
+    <link rel="stylesheet" type="text/css" href="basestyle.css">
+    <script src="adminscript.js"></script>
   </head>
   <body>
   <title> Admin Scheduler</title>
-
+  <header>
+    <h1>Team Wezen Scheduler</h1>
+    <h2>Administrator Portal</h2>
+  </header>
+  <section>
+    <nav>
+      <label for="viewMenu">Show: </label>
+      <select id="viewMenu" onchange="toggleSort()">
+        <option value="all">All</option>
+        <option value="hr">By Num Hours</option>
+        <option value="day">By Num Days</option>
+      </select>
+      <!-- <form action="index.html" method="post"> -->
+      <form id="sortForm" class="adminform">
+        <label for="sort">Last </label>
+        <input id="sort" type="text">
+        <label id="sortlabel"></label>
+      </form>
+    </nav>
+  </section>
+  <section id="displaySchedules">
+    <ol id="scheduleList"></ol>
+  </section>
   </body>
 </html>
