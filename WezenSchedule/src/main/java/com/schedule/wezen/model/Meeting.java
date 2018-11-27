@@ -3,11 +3,16 @@ package com.schedule.wezen.model;
 public class Meeting {
 	
 	String name;
-	int secretCode;
+	int secretCode, id;
 	
-	public Meeting(String title, int secretCode) {
+	public Meeting(String title, int secretCode, int id) {
 		this.name = title;
 		this.secretCode = secretCode;
+		this.id = id;
+	}
+	
+	public boolean isCorrectCode(int sc) {
+		return (sc == secretCode);
 	}
 	
 	public String getName() {return name;}

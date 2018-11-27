@@ -34,12 +34,12 @@ public class Schedule {
 		return code;
 	}
 	
-	public boolean createMeeting(TimeSlot t, String title) {
+	public boolean createMeeting(TimeSlot t, String title, int id) {
 		if(t.isOccupied()) {
 			return false;
 		}
 		else {
-			t.slotMeeting = new Meeting(title, createSecretCode());
+			t.slotMeeting = new Meeting(title, createSecretCode(), id);
 			return true;
 		}
 	}
@@ -75,6 +75,10 @@ public class Schedule {
 			}
 		}
 		return available;
+	}
+	
+	public boolean isCorrectCode(int sc) {
+		return (sc == secretCode);
 	}
 	
 	public LocalDate getStartDate() {return startDate;}
