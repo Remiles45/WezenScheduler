@@ -17,7 +17,7 @@ window.onload = generateCalendar;
       else{monthView();}
   }
   function makeHeader(arr){
-      let header = document.createElement("tr");
+    let header = document.createElement("tr");
     document.getElementById("daysview").appendChild(header);
     for(let j=0;j<arr.length;j++){
       let head = document.createElement("td");
@@ -100,6 +100,7 @@ window.onload = generateCalendar;
 }
 
 function handleFreeButton(obj){
+  promptMeetingName();
     let day = obj.value;
     let data = {};
     data["date"] = day;
@@ -122,4 +123,11 @@ function handleFreeButton(obj){
             processDateResponse(name, day, "N/A");
         }
     }
+}
+
+function promptMeetingName(){
+  prompt = document.getElementById('mtngPrompt');
+  prompt.style.display='block';
+  prompt.style.width='auto';
+
 }

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <link rel="stylesheet" type="text/css" href="https://b3ivwb09fg.execute-api.us-east-1.amazonaws.com/Alpha/basestyle.css">
+    <link rel="stylesheet" type="text/css" href="basestyle.css">
   </head>
   <body>
     <script src="calendarscript.js"></script>
@@ -123,6 +123,23 @@
     	<table id="timeslot"></table>
     </section>
 
+    </section>
+
+
+    <section id="mtngNamePrompt">
+    	<div id ="mtngPrompt" class="login">
+    		<form  class="login-content animate">
+    	    <div class="container">
+    	      <label for="mtngName"><b>Name For Meeting: </b></label>
+    	      <input type="text" id="mtngName" placeholder="Enter Name" required>
+
+    	      <button type="submit">Submit</button>
+    	    </div>
+    	    <div class="container" style="background-color:#f1f1f1">
+    	      <button type="button" onclick="document.getElementById('schedid01').style.display='none'" class="cancelbtn">Cancel</button>
+    	    </div>
+    	  </form>
+    	</div>
     </section>
 
   </body>

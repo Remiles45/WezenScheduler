@@ -7,11 +7,20 @@ function getSchedules(){
   for(let i=0; i<schedulelist.length;i++){
     let list = document.getElementById("scheduleList");
     let curr_sched = document.createElement("li");
-    curr_sched.innerHTML = schedulelist[i];
+    // curr_sched.className = "schedules";
+    let deletebtn = document.createElement("button");
+    deletebtn.innerText = "Delete";
+    curr_sched.listval = schedulelist[i];
+    deletebtn.addEventListener('click',function(){handleDeleteSchedule(curr_sched)});
+    curr_sched.innerHTML = curr_sched.listval + "  ";
+    curr_sched.appendChild(deletebtn);
     list.appendChild(curr_sched);
   }
 }
 
+function handleDeleteSchedule(sched){
+  alert("Im gonna delete schedule called "+ sched.listval );
+}
 
 function toggleSort(){
     let selection = document.getElementById("viewMenu");
