@@ -1,13 +1,22 @@
 let schedule_url = "https://b3ivwb09fg.execute-api.us-east-1.amazonaws.com/Alpha";
-
+let curr_month = "December";
+let curr_day = 1;
+let curr_year = 2018;
 window.onload = generateCalendar;
 
   function run(){
-    let month = document.getElementById("selectmonth").value;
-    if (month == "nomonth"){
-      month = "November"
-    }
-    document.getElementById("displaymonth").innerHTML = month;
+    curr_day = document.getElementById("selectDate").value;
+    curr_year = document.getElementById("selectyear").value;
+    alert("day = "+curr_day + " year= " + curr_year);
+    if (document.getElementById("selectmonth").value == "nomonth"){
+      curr_month = "December"
+    }else {curr_month = document.getElementById("selectmonth").value;}
+    updateDisplay();
+  }
+
+  function updateDisplay(){
+    document.getElementById("showyear").innerHTML = curr_year;
+    document.getElementById("displaymonth").innerHTML =curr_month;
   }
 
   function generateCalendar(){
@@ -101,9 +110,9 @@ window.onload = generateCalendar;
 
 function handleFreeButton(obj){
   promptMeetingName();
-    let day = obj.value;
+    curr_day = obj.value;
     let data = {};
-    data["date"] = day;
+    data["date"] = curr_day;
     let js = JSON.stringify(data);
     console.log("JS:" + js);
     let xhr = new XMLHttpRequest();
@@ -118,16 +127,20 @@ function handleFreeButton(obj){
         console.log(xhr.request);
         if(xhr.readyState == XMLHttpRequest.DONE) {
             console.log ("XHR:" + xhr.responseText);
-            processDateResponse(name, day, xhr.responseText);
+            processDateResponse(name, curr_day, xhr.responseText);
         } else {
-            processDateResponse(name, day, "N/A");
+            processDateResponse(name, curr_day, "N/A");
         }
     }
 }
 
 function promptMeetingName(){
-  prompt = document.getElementById('mtngPrompt');
+  let label = document.getElementById("mtnglabel");
+  label.innerHTML="<b>Name for Meeting on " + curr_day + ", " + curr_month + " " + curr_year + ": <b>";
+
+  let prompt = document.getElementById('mtngPrompt');
   prompt.style.display='block';
-  prompt.style.width='auto';
+  // prompt.style.width='auto';
+
 
 }
